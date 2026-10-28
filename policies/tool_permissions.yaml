@@ -1,0 +1,42 @@
+# Which tools the model may request, where, with which arguments, and who approves.
+# Enforced in layers/l4_tools.py. No prompt takes part in these decisions.
+#
+# Fields
+#   allowed_envs          environments where the tool may run at all
+#   mutates               true if the tool changes state; mutating tools need approval during a freeze
+#   scope                 own_customer_only = customer_id is injected by the server from the session
+#   args                  required arguments and their types (str | int | bool)
+#   server_injected_args  arguments the server sets; the model may not choose them
+#   verb_from_arg         argument whose first word is the operation verb (e.g. SQL)
+#   destructive_verbs     verbs that always need approval
+#   approval              none | user_confirm (explicit confirmation in the UI, not in chat text)
+#   approver              who approves when approval is needed
+#   limits.per_session    calls allowed per session before approval is needed
+
+tools:
+  lookup_card_status:
+    allowed_envs: [dev, staging, prod]
+    mutates: false
+    scope: own_customer_only
+    args: {card_id: str}
+    server_injected_args: [customer_id]
+    approval: none
+
+  raise_dispute:
+    allowed_envs: [dev, staging, prod]
+    mutates: true
+    scope: own_customer_only
+    args: {transaction_id: str, reason: str}
+    server_injected_args: [customer_id]
+    approval: user_confirm
+    approver: user
+    limits: {per_session: 1}
+
+  run_sql:
+    allowed_envs: [dev, staging]     # never prod
+    mutates: true
+    args: {query: str}
+    verb_from_arg: query
+    destructive_verbs: [DROP, DELETE, TRUNCATE, UPDATE, ALTER, INSERT]
+    approval: none
+    approver: engineer_on_call

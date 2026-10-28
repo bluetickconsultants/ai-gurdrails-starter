@@ -1,0 +1,17 @@
+# Fixed refusal copy, reviewed by brand and compliance. The model never writes these.
+# Keys are referenced by layers/l2_router.py and layers/pipeline.py.
+
+out_of_scope: >-
+  I can help with your account, card status, branch timings, published fees and card disputes.
+  For anything else, please contact us through the Help section of the app.
+
+manipulation: >-
+  I can't change how I work or make offers in this chat. I'm happy to help with your account,
+  cards, fees or disputes.
+
+other_customer_data: >-
+  I can only share details about your own account, and only after you've signed in.
+
+input_rejected: >-
+  I couldn't process that message. Please rephrase it, or contact us through the Help section
+  of the app.

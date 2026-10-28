@@ -1,0 +1,2 @@
+# Only needed to run against a real model (provider: anthropic).
+anthropic>=0.40

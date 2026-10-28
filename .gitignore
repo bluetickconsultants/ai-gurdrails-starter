@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+logs/
+eval_report*.json
+model_eval_report.json
+.env
+.DS_Store

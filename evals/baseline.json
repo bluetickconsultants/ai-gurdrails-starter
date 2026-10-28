@@ -1,0 +1,50 @@
+{
+  "provider": "stub",
+  "suites": {
+    "fabrication": {
+      "rate": 1.0,
+      "passed": 2,
+      "ran": 2
+    },
+    "golden": {
+      "rate": 1.0,
+      "passed": 8,
+      "ran": 8
+    },
+    "grounding": {
+      "rate": 1.0,
+      "passed": 4,
+      "ran": 4
+    },
+    "incidents": {
+      "rate": 1.0,
+      "passed": 5,
+      "ran": 5
+    },
+    "indirect_injection": {
+      "rate": 1.0,
+      "passed": 2,
+      "ran": 2
+    },
+    "injection": {
+      "rate": 1.0,
+      "passed": 6,
+      "ran": 6
+    },
+    "overreach": {
+      "rate": 1.0,
+      "passed": 11,
+      "ran": 11
+    },
+    "pii": {
+      "rate": 1.0,
+      "passed": 4,
+      "ran": 4
+    },
+    "tone": {
+      "rate": 1.0,
+      "passed": 4,
+      "ran": 4
+    }
+  }
+}

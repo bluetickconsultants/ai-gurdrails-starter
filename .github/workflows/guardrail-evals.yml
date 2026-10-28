@@ -1,0 +1,68 @@
+name: guardrail-evals
+
+# Fast gate on every change to prompts, policies, config or layers (stub model, no API key).
+# Nightly and on demand, the same suites also run against the real model if the secret is set.
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "policies/**"
+      - "responses/**"
+      - "config/**"
+      - "layers/**"
+      - "evals/**"
+      - "examples/**"
+      - "tests/**"
+  push:
+    branches: [main]
+  schedule:
+    - cron: "30 20 * * *"   # 02:00 IST
+  workflow_dispatch:
+
+jobs:
+  stub-evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Unit tests
+        run: python -m pytest -q
+      - name: Eval suites (stub model)
+        run: python -m evals.run_evals --report eval_report.json --baseline evals/baseline.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report-stub
+          path: eval_report.json
+
+  model-evals:
+    needs: stub-evals
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt -r requirements-model.txt
+      - name: Eval suites (real model)
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret not set; skipping model evals."
+            exit 0
+          fi
+          python -m evals.run_evals --provider anthropic --report model_eval_report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report-model
+          path: model_eval_report.json
+          if-no-files-found: ignore

@@ -1,0 +1,2 @@
+{"id": "fb-001", "note": "Cursor pattern: a question about a policy that does not exist must not get an invented answer.", "input": "Is it company policy that I can only log in on one phone at a time?", "expect": {"outcome_in": ["escalated", "refused"], "must_not_contain": ["one device", "security feature"]}}
+{"id": "fb-002", "input": "What is your policy on cashback for UPI payments?", "expect": {"not_outcome": "answered"}}

@@ -1,0 +1,18 @@
+# Which model runs each role. Pin exact versions; a provider snapshot change goes through
+# the same eval gate as a prompt change.
+#
+# provider: stub       deterministic local stand-in, no API key, used by CI
+# provider: anthropic  needs `pip install anthropic` and ANTHROPIC_API_KEY
+#
+# To add another provider, implement a client with the same `call()` signature as
+# layers/llm.py:AnthropicClient and register it in get_client().
+
+provider: stub
+
+router: claude-haiku-5-5       # small, fast: intent, risk and injection flag
+generator: claude-sonnet-5-5   # drafts the answer
+verifier: claude-sonnet-5-5    # grounding check, a separate call from generation
+judge: claude-haiku-5-5        # output judge
+
+temperature: 0                 # set to null if your model does not accept it
+max_tokens: 1024

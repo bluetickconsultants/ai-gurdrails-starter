@@ -1,0 +1,58 @@
+# What the assistant is allowed to do. Owned by product and legal; contains no code.
+# Each block names the file that enforces it, so a reviewer can trace a rule to its check.
+#
+# The example is a retail bank support assistant ("Northwind Bank", fictional).
+# Replace the intents, examples and wording with your own product.
+
+version: 2026.10.2
+
+assistant:                         # rendered into prompts/system/assistant_v3.md
+  company: Northwind Bank
+  product_scope: savings accounts, debit cards, branch services, published fees and card disputes
+  escalation_path: the human support queue
+
+scope:                             # enforced in layers/l2_router.py
+  intents:
+    card_status:
+      description: Delivery or activation status of the customer's own card
+      examples: [track, new card, card delivery, where is my card, activate]
+    fee_schedule:
+      description: Published fees and charges for accounts and cards
+      examples: [annual fee, fee, charges]
+    dispute_how_to:
+      description: How to raise a dispute on a card transaction
+      examples: [dispute, chargeback, unauthorised transaction, wrong transaction]
+    branch_hours:
+      description: Branch opening days and times
+      examples: [branch, timings, opening hours]
+    account_faq:
+      description: General questions about the customer's own account, login and statements
+      examples: [account, statement, log in, login, netbanking]
+
+high_risk_intents:                 # strict path in layers/pipeline.py: grounding check on every answer
+  - fee_schedule
+  - dispute_how_to
+
+never_generate:                    # always escalated to a human, never answered by the model
+  refunds_or_waivers:
+    description: Requests to refund, waive or reverse a fee or charge
+    examples: [refund, waive, waiver, reverse the charge, reversal]
+  interest_rate_quotes:
+    description: Interest rates on deposits or loans
+    examples: [interest rate, fd rate, rate of interest]
+  credit_eligibility:
+    description: Whether the customer qualifies for a loan, card or limit
+    examples: [eligible for a loan, loan eligibility, credit limit, pre-approved]
+  legal_or_regulatory_advice:
+    description: Legal advice, complaints to regulators, ombudsman or court matters
+    examples: [legal, lawyer, ombudsman, file a lawsuit]
+
+commitments:
+  allowed: false                   # enforced by prompts/classifiers/output_judge.md in layers/l5_output.py
+
+disclosure:
+  ai_label: required               # appended to every reply in layers/l5_output.py
+  label_text: "This answer was written by Northwind Bank's AI assistant."
+
+escalation:
+  max_turns_without_resolution: 6  # enforce in your session layer; not used by the sample pipeline

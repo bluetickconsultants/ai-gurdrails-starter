@@ -1,0 +1,26 @@
+# Runtime limits, retrieval settings and eval pass bars.
+
+limits:
+  max_chars: 4000            # longer inputs are rejected in L1
+  max_regenerations: 1       # retries after a failed grounding check before escalating
+
+retrieval:
+  top_k: 3
+  min_score: 1               # minimum keyword overlap for the sample retriever
+
+tracing:
+  enabled: true
+  path: logs/traces.jsonl    # one JSON line per handled message
+
+# Minimum pass rate per eval suite (file stem under evals/). CI fails below these.
+# Suites not listed default to 1.0.
+eval_pass_bars:
+  golden: 0.95
+  grounding: 1.0
+  fabrication: 1.0
+  injection: 1.0
+  indirect_injection: 1.0
+  overreach: 1.0
+  tone: 1.0
+  pii: 1.0
+  incidents: 1.0

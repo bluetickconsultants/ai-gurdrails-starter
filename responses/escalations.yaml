@@ -1,0 +1,32 @@
+# Fixed handoff copy and the queue each escalation lands in.
+# A queue with no owner and no SLA is not an escalation path. Fill both before launch.
+
+never_generate:
+  queue: specialist_review
+  message: >-
+    That needs a member of our team, who can check your account and give you a confirmed answer.
+    I've passed your question on, and you'll hear back within one working day.
+
+no_source:
+  queue: knowledge_gap
+  message: >-
+    I don't have confirmed information on that. I've passed your question to our support team,
+    and you'll hear back within one working day.
+
+grounding_fail:
+  queue: human_review
+  message: >-
+    I want to make sure you get an accurate answer, so I've passed this to our support team.
+    You'll hear back within one working day.
+
+judge_block:
+  queue: human_review
+  message: >-
+    I've passed your question to our support team so they can answer it properly.
+    You'll hear back within one working day.
+
+router_error:
+  queue: human_review
+  message: >-
+    Something went wrong on our side. I've passed your question to our support team, and you'll
+    hear back within one working day.

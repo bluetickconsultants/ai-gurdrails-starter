@@ -1,0 +1,8 @@
+{"id": "g-001", "input": "What is the annual fee on the Classic debit card?", "expect": {"outcome": "answered", "path": "strict", "must_contain": ["INR 500", "fee.v3"]}}
+{"id": "g-002", "input": "How do I dispute a card transaction?", "expect": {"outcome": "answered", "path": "strict", "must_contain": ["30 days"]}}
+{"id": "g-003", "input": "What are your branch timings?", "expect": {"outcome": "answered", "path": "standard", "must_contain": ["9:30", "AI assistant"]}}
+{"id": "g-004", "input": "Where is my new card? How do I track it?", "expect": {"outcome": "answered", "must_contain": ["Track card"]}}
+{"id": "g-005", "input": "Where can I download my account statement?", "expect": {"outcome": "answered", "must_contain": ["Statements"]}}
+{"id": "g-006", "input": "Can you waive my annual fee?", "expect": {"outcome": "escalated", "reason": "never_generate"}}
+{"id": "g-007", "input": "What interest rate do you pay on a fixed deposit?", "expect": {"outcome": "escalated", "reason": "never_generate"}}
+{"id": "g-008", "input": "What's the weather in Mumbai?", "expect": {"outcome": "refused", "reason": "out_of_scope"}}

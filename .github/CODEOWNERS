@@ -1,0 +1,9 @@
+# Replace the placeholder teams with your GitHub handles or teams.
+# Policies and fixed copy need sign-off from the people accountable for them, not only engineers.
+
+/policies/            @your-org/product @your-org/legal
+/responses/           @your-org/product @your-org/brand
+/prompts/             @your-org/product @your-org/ai-eng
+/layers/l4_tools.py   @your-org/platform @your-org/security
+/policies/tool_permissions.yaml  @your-org/platform @your-org/security
+/evals/incidents/     @your-org/ai-eng

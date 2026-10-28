@@ -1,0 +1,23 @@
+# Trust tier for every retrieval source. Enforced in layers/l3_retrieval.py.
+# Patterns are matched against a chunk's `source` path with shell-style wildcards.
+# A source that matches nothing is treated as untrusted.
+
+tiers:
+  authoritative: [policy_docs/*, fee_schedule_db/*, regulatory_curated/*]
+  supporting:    [help_center/*, product_faq/*]
+  untrusted:     [web/*, user_uploads/*, email_bodies/*]
+
+rules:
+  # Strict-path (high-risk) intents may only use these tiers.
+  high_risk_intents_require: [authoritative]
+
+  # Untrusted chunks are wrapped in this tag so the model treats them as quoted data.
+  untrusted_wrap_tag: retrieved_untrusted
+
+  # Non-authoritative chunks matching any of these are dropped before the model sees them.
+  quarantine_patterns:
+    - 'ignore (all |any )?(previous|prior|above) instructions'
+    - 'disregard (the |all )?(above|previous)'
+    - 'you are now\b'
+    - '(system|hidden) prompt'
+    - 'tell the user'
